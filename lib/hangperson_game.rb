@@ -12,12 +12,10 @@ class HangpersonGame
     @word = word
     @guesses = ''
     @wrong_guesses = ''
-    @word_with_guesses = ''
-    update
+
   end
   
   attr_reader :word
-  attr_reader :word_with_guesses
   attr_accessor :guesses
   attr_accessor :wrong_guesses
   
@@ -34,17 +32,16 @@ class HangpersonGame
     else
       @wrong_guesses += letter
     end
-    update()
     return true
   end
 
-  def update()
-    @word_with_guesses = @word.chars.map {|e| @guesses.include?(e) ? e : '-'}.join()
-    # puts @word_with_guesses
+  
+  def word_with_guesses
+    @word.chars.map {|e| @guesses.include?(e) ? e : '-'}.join()
   end
   
   def check_win_or_lose()
-    if @word_with_guesses == @word
+    if !word_with_guesses().include?('-')
       return :win
     elsif @wrong_guesses.length == 7
       return :lose
