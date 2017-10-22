@@ -12,7 +12,6 @@ class HangpersonGame
     @word = word
     @guesses = ''
     @wrong_guesses = ''
-
   end
   
   attr_reader :word
@@ -41,6 +40,9 @@ class HangpersonGame
   end
   
   def check_win_or_lose()
+    if word == ''
+      return :play
+    end
     if !word_with_guesses().include?('-')
       return :win
     elsif @wrong_guesses.length == 7
