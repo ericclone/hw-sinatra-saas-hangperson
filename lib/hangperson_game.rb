@@ -10,8 +10,49 @@ class HangpersonGame
   
   def initialize(word)
     @word = word
+    @guesses = ''
+    @wrong_guesses = ''
+    @word_with_guesses = ''
+    update
+  end
+  
+  attr_reader :word
+  attr_reader :word_with_guesses
+  attr_accessor :guesses
+  attr_accessor :wrong_guesses
+  
+  def guess(letter)
+    if letter == nil or letter == '' or !(letter =~ /[a-z]/i)
+      raise ArgumentError
+    end
+    letter = letter.downcase
+    if @guesses.include?(letter) or @wrong_guesses.include?(letter)
+      return false
+    end
+    if @word.include?(letter)
+      @guesses += letter
+    else
+      @wrong_guesses += letter
+    end
+    update()
+    return true
   end
 
+  def update()
+    @word_with_guesses = @word.chars.map {|e| @guesses.include?(e) ? e : '-'}.join()
+    # puts @word_with_guesses
+  end
+  
+  def check_win_or_lose()
+    if @word_with_guesses == @word
+      return :win
+    elsif @wrong_guesses.length == 7
+      return :lose
+    else
+      return :play
+    end
+  end
+  
   # You can test it by running $ bundle exec irb -I. -r app.rb
   # And then in the irb: irb(main):001:0> HangpersonGame.get_random_word
   #  => "cooking"   <-- some random word
